@@ -1,0 +1,17 @@
+<div class="min-h-screen bg-slate-50 flex flex-col font-sans">
+
+  <!-- Top Header -->
+  <app-header></app-header>
+
+  <!-- Page Content -->
+  <main class="flex-1 w-full max-w-[1600px] mx-auto p-6 md:p-8 relative">
+    <router-outlet></router-outlet>
+
+    <!-- Background Shapes -->
+    <div class="fixed top-0 left-0 w-full h-full pointer-events-none -z-10 overflow-hidden">
+      <div class="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] rounded-full bg-blue-400/5 blur-3xl"></div>
+      <div class="absolute bottom-[-10%] left-[20%] w-[400px] h-[400px] rounded-full bg-indigo-400/5 blur-3xl"></div>
+    </div>
+  </main>
+
+</div>
