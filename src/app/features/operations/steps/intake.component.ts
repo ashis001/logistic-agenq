@@ -72,7 +72,7 @@ import { OperationsStateService } from '../../../core/services/operations-state.
             <div class="flex gap-2">
               <input formControlName="volume" type="number" 
                      class="flex-1 bg-white border border-slate-300 shadow-sm rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 placeholder:text-slate-400 text-slate-700 font-medium" 
-                     placeholder="0">
+                     placeholder="1">
               <div class="w-24 bg-slate-50 border border-slate-300 shadow-sm rounded-lg flex items-center px-3 relative">
                  <span class="text-sm font-medium text-slate-700">CBM</span>
                  <div class="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-500">
@@ -105,25 +105,7 @@ import { OperationsStateService } from '../../../core/services/operations-state.
         </div>
 
         <!-- Destination Location -->
-        <div class="bg-[#F8FAFC] p-6 rounded-xl border border-slate-100">
-          <div class="flex items-center gap-2 mb-4">
-             <div class="w-2 h-2 rounded-full bg-emerald-500 ring-4 ring-emerald-100"></div>
-             <h3 class="text-sm font-bold text-slate-900">Destination Location</h3>
-          </div>
-          
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
-            <div class="md:col-span-2">
-              <input formControlName="destination" type="text" class="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-slate-400 text-sm" placeholder="Street address">
-            </div>
-            <div>
-              <input type="text" class="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-slate-400 text-sm" placeholder="City">
-            </div>
-             <div>
-              <input type="text" class="w-full bg-white border border-slate-200 rounded-lg px-4 py-2.5 focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all placeholder:text-slate-400 text-sm" placeholder="Country">
-            </div>
-          </div>
-        </div>
-        
+       
         <!-- Row 3: Date & Notes -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
            <div>
@@ -157,7 +139,7 @@ export class ShipmentIntakeComponent implements OnInit {
       weight: [null, [Validators.required, Validators.min(0.1)]],
       volume: [null, [Validators.required, Validators.min(0.1)]],
       pickupLocation: ['', Validators.required],
-      destination: ['', Validators.required]
+   
     });
   }
 
