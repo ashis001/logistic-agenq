@@ -82,7 +82,7 @@ interface Carrier {
         </div>
 
         <div class="flex justify-end pt-6 border-t border-slate-100">
-          <button type="submit" [disabled]="form.invalid" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg flex items-center gap-2 transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50 disabled:cursor-not-allowed">
+          <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg flex items-center gap-2 transition-all shadow-lg shadow-blue-500/20">
             Continue to Documentation
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </button>
@@ -99,7 +99,7 @@ export class CarrierSelectionComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private opsService: OperationsStateService) {
     this.form = this.fb.group({
-      selectedCarrierId: ['', Validators.required]
+      selectedCarrierId: ['']
     });
   }
 
