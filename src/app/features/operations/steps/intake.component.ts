@@ -124,7 +124,50 @@ import { OperationsStateService } from '../../../core/services/operations-state.
           </div>
         </div>
         
-        <!-- Row 3: Date & Notes -->
+        <!-- Row 3: Special Handling (Multi-Selection) & Service Priority (Radio Buttons) -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-3">Special Handling</label>
+            <div class="grid grid-cols-2 gap-3">
+              <label class="flex items-center gap-2 cursor-pointer group">
+                <input type="checkbox" name="fragile" class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                <span class="text-sm text-slate-600 group-hover:text-slate-900 transition-colors">Fragile</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer group">
+                <input type="checkbox" name="hazardous" class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                <span class="text-sm text-slate-600 group-hover:text-slate-900 transition-colors">Hazardous</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer group">
+                <input type="checkbox" name="oversized" class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                <span class="text-sm text-slate-600 group-hover:text-slate-900 transition-colors">Oversized</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer group">
+                <input type="checkbox" name="temperature" class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500">
+                <span class="text-sm text-slate-600 group-hover:text-slate-900 transition-colors">Temperature Controlled</span>
+              </label>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-sm font-bold text-slate-700 mb-3">Service Priority</label>
+            <div class="flex flex-wrap gap-4">
+              <label class="flex items-center gap-2 cursor-pointer group">
+                <input type="radio" value="standard" formControlName="priority" class="w-4 h-4 border-slate-300 text-blue-600 focus:ring-blue-500">
+                <span class="text-sm text-slate-600 group-hover:text-slate-900 transition-colors">Standard</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer group">
+                <input type="radio" value="express" formControlName="priority" class="w-4 h-4 border-slate-300 text-blue-600 focus:ring-blue-500">
+                <span class="text-sm text-slate-600 group-hover:text-slate-900 transition-colors">Express</span>
+              </label>
+              <label class="flex items-center gap-2 cursor-pointer group">
+                <input type="radio" value="economy" formControlName="priority" class="w-4 h-4 border-slate-300 text-blue-600 focus:ring-blue-500">
+                <span class="text-sm text-slate-600 group-hover:text-slate-900 transition-colors">Economy</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Row 4: Date & Notes -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
            <div>
              <label class="block text-sm font-bold text-slate-700 mb-2">Preferred Pickup Date <span class="text-slate-400">*</span></label>
@@ -157,7 +200,8 @@ export class ShipmentIntakeComponent implements OnInit {
       weight: [null, [Validators.required, Validators.min(0.1)]],
       volume: [null, [Validators.required, Validators.min(0.1)]],
       pickupLocation: ['', Validators.required],
-      destination: ['', Validators.required]
+      destination: ['', Validators.required],
+      priority: ['standard']
     });
   }
 
