@@ -27,7 +27,8 @@ import { OperationsStateService } from '../../../core/services/operations-state.
             <!-- Commercial Invoice -->
             <div class="p-5 border border-slate-200 rounded-xl bg-white hover:border-blue-300 transition-colors">
                 <div class="flex items-center justify-between mb-2">
-                    <label class="font-bold text-slate-800 text-sm">Commercial Invoice</label>
+                    <label class="font-bold text-slate-800 text-sm">Commercial Invoice <span class="text-red-500">*</span></label>
+                    <span class="text-xs font-medium text-slate-400 bg-slate-100 px-2 py-0.5 rounded">Required</span>
                 </div>
                 <div class="relative">
                    <div class="flex items-center justify-center w-full">
@@ -53,7 +54,8 @@ import { OperationsStateService } from '../../../core/services/operations-state.
             <!-- Packing List -->
              <div class="p-5 border border-slate-200 rounded-xl bg-white hover:border-blue-300 transition-colors">
                 <div class="flex items-center justify-between mb-2">
-                    <label class="font-bold text-slate-800 text-sm">Packing List</label>
+                    <label class="font-bold text-slate-800 text-sm">Packing List <span class="text-red-500">*</span></label>
+                    <span class="text-xs font-medium text-slate-400 bg-slate-100 px-2 py-0.5 rounded">Required</span>
                 </div>
                 <div class="relative">
                    <div class="flex items-center justify-center w-full">
@@ -84,7 +86,7 @@ import { OperationsStateService } from '../../../core/services/operations-state.
         </div>
 
         <div class="flex justify-end pt-6 border-t border-slate-100">
-          <button type="submit" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg flex items-center gap-2 transition-all shadow-lg shadow-blue-500/20">
+          <button type="submit" [disabled]="form.invalid" class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg flex items-center gap-2 transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50 disabled:cursor-not-allowed">
             Continue to Pricing
             <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
           </button>
@@ -99,8 +101,8 @@ export class DocumentationComponent implements OnInit {
 
   constructor(private fb: FormBuilder, private opsService: OperationsStateService) {
     this.form = this.fb.group({
-      commercialInvoice: [false],
-      packingList: [false],
+      commercialInvoice: [false, Validators.requiredTrue],
+      packingList: [false, Validators.requiredTrue],
       exportDeclaration: [false]
     });
   }
