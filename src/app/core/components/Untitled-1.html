@@ -1,0 +1,590 @@
+
+
+(() => {
+
+
+
+  console.log("[Straddle Overlay] Mounting form...");
+
+
+
+  const iframeSelectors = [
+    'iframe[src*="go.straddle.io"]',
+    'iframe[src*="tally.so"]',
+    'iframe[title*="Straddle"]',
+    'iframe'
+  ];
+
+
+
+  let targetIframe = null;
+
+
+
+  for (const sel of iframeSelectors) {
+    targetIframe = document.querySelector(sel);
+    if (targetIframe) break;
+  }
+
+
+
+  let container = targetIframe
+    ? (targetIframe.closest('div') || targetIframe.parentElement || document.body)
+    : document.body;
+
+
+
+  if (getComputedStyle(container).position === 'static') {
+    container.style.position = 'relative';
+  }
+
+
+
+  container.style.overflow = 'visible';
+
+
+
+  container
+    .querySelectorAll('[data-straddle-dark-overlay]')
+    .forEach(el => el.remove());
+
+
+
+  const overlay = document.createElement('div');
+
+
+
+  overlay.setAttribute('data-straddle-dark-overlay', '1');
+
+
+
+  Object.assign(overlay.style, {
+    position: 'absolute',
+    inset: '0',
+    width: '100%',
+    zIndex: '9999999',
+    background: 'transparent',
+    color: '#e5e5e5',
+    pointerEvents: 'auto',
+    overflowY: 'auto'
+  });
+
+
+
+  overlay.innerHTML = `
+<style>
+
+
+
+.dark-root{
+width:100%;
+margin:2.5rem  auto 0 auto;
+padding:48px 40px;
+background:rgb(22,22,23);
+border-radius:12px;
+font-size:15px;
+line-height:1.5;
+}
+
+
+
+.dark-h2{
+font-size:1.5rem;
+font-weight:600;
+color:#fff;
+margin:0 0 1rem;
+}
+
+
+
+.dark-h3{
+font-size:1.25rem;
+font-weight:600;
+color:#f8f4f2;
+margin:1.75rem 0 .5rem;
+}
+
+
+
+.dark-help{
+font-size:14.5px;
+color:#a0a0a0;
+margin:.4rem 0 1.5rem;
+}
+
+
+
+.dark-input,
+.dark-textarea,
+.dark-select{
+width:100%;
+height:46px;
+padding:0 14px;
+font-size:15px;
+background:#171717;
+color:#f0f0f0;
+border:1px solid #333;
+border-radius:8px;
+box-sizing:border-box;
+margin-bottom:1.5rem;
+}
+
+
+
+.dark-textarea{
+min-height:110px;
+padding:12px 14px;
+resize:vertical;
+}
+
+
+
+.dark-input:focus,
+.dark-textarea:focus,
+.dark-select:focus{
+border-color:#60a5fa;
+outline:none;
+}
+
+
+
+.dark-button-wrapper{
+margin-top:2rem;
+display:flex;
+}
+
+
+
+.dark-button{
+height:48px;
+padding:0 24px;
+background:#f8f4f2;
+color:#232529;
+font-size:16px;
+font-weight:600;
+border:1px solid #d9d5d3;
+border-radius:8px;
+cursor:pointer;
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+
+
+.dark-button svg{
+width:20px;
+height:20px;
+stroke:#232529;
+stroke-width:2.2;
+}
+
+
+
+[data-straddle-dark-overlay]::-webkit-scrollbar{
+display:none;
+}
+
+
+
+[data-straddle-dark-overlay]{
+-ms-overflow-style:none;
+scrollbar-width:none;
+}
+
+
+
+</style>
+
+
+
+<div class="dark-root">
+
+
+
+<h2 class="dark-h2">Tell us about your business</h2>
+
+
+
+<div class="dark-help">
+This information is collected to better serve your business and comply with regulators and financial partners
+</div>
+
+
+
+<h3 class="dark-h3">Legal business name</h3>
+<input class="dark-input" id="legal_name" placeholder="Company"/>
+
+
+
+<div class="dark-help">
+Your legal business name and EIN must match IRS documents
+</div>
+
+
+
+<h3 class="dark-h3">Employer Identification Number (EIN)</h3>
+<input class="dark-input" id="ein" maxlength="9" placeholder="Tax ID"/>
+
+
+
+<h3 class="dark-h3">Business name</h3>
+<input class="dark-input" id="business_name" placeholder="Doing business as"/>
+
+
+
+<h3 class="dark-h3">Business address</h3>
+<input class="dark-input" id="street" placeholder="Street address"/>
+<input class="dark-input" id="suite" placeholder="Unit or suite"/>
+<input class="dark-input" id="city" placeholder="City"/>
+
+
+
+<select class="dark-select" id="state_select">
+<option>State</option>
+<option value="AL">AL</option>
+<option value="NY">NY</option>
+</select>
+
+
+
+<input class="dark-input" id="zip" maxlength="5" placeholder="Zip code"/>
+
+
+
+<h3 class="dark-h3">Business phone number</h3>
+<input class="dark-input" id="phone" placeholder="Primary phone"/>
+
+
+
+<h3 class="dark-h3">Industry</h3>
+
+
+
+<select class="dark-select" id="industry">
+<option>Choose category</option>
+<option value="Digital Goods and Software">Digital Goods and Software</option>
+</select>
+
+
+
+<h3 class="dark-h3">Business website</h3>
+<input class="dark-input" id="website" placeholder="www.example.com"/>
+
+
+
+<h3 class="dark-h3">Product description</h3>
+<textarea class="dark-textarea" id="description"></textarea>
+
+
+
+<div class="dark-button-wrapper">
+
+
+
+<button class="dark-button" id="next_btn">
+
+
+
+Next
+
+
+
+<svg viewBox="0 0 24 24" fill="none">
+<path d="M5 12h14M12 5l7 7-7 7"/>
+</svg>
+
+
+
+</button>
+
+
+
+</div>
+
+
+
+</div>
+`;
+
+
+
+  container.appendChild(overlay);
+
+
+
+  function updateOverlayHeight() {
+
+
+
+    let height = Math.max(
+      document.body.scrollHeight,
+      container.scrollHeight,
+      targetIframe?.scrollHeight || 0
+    );
+
+
+
+    <!-- overlay.style.height = height + "px"; -->
+     overlay.style.height = (height + 2) + "px";
+
+
+
+  }
+
+
+
+  setTimeout(updateOverlayHeight,100);
+  setTimeout(updateOverlayHeight,500);
+  setTimeout(updateOverlayHeight,1500);
+
+
+
+  window.addEventListener("resize",updateOverlayHeight);
+
+
+
+  console.log("[Straddle Overlay] Injected successfully");
+
+
+
+})();
+
+ //! ---------------------------
+
+ (() => {
+
+console.log("[Straddle Overlay] Mounting form...");
+
+const iframeSelectors = [
+'iframe[src*="go.straddle.io"]',
+'iframe[src*="tally.so"]',
+'iframe[title*="Straddle"]',
+'iframe'
+];
+
+let targetIframe = null;
+
+for (const sel of iframeSelectors) {
+  targetIframe = document.querySelector(sel);
+  if (targetIframe) break;
+}
+
+let container = targetIframe
+  ? (targetIframe.closest('div') || targetIframe.parentElement || document.body)
+  : document.body;
+
+if (getComputedStyle(container).position === 'static') {
+  container.style.position = 'relative';
+}
+
+container.style.overflow = 'visible';
+
+container
+.querySelectorAll('[data-straddle-dark-overlay]')
+.forEach(el => el.remove());
+
+const overlay = document.createElement('div');
+
+overlay.setAttribute('data-straddle-dark-overlay','1');
+
+Object.assign(overlay.style,{
+position:'absolute',
+top:'0',
+left:'0',
+zIndex:'9999999',
+background:'transparent',
+color:'#e5e5e5',
+pointerEvents:'auto',
+overflowY:'auto'
+});
+
+overlay.innerHTML = `
+<style>
+
+.dark-root{
+width:95%;
+max-width:1100px;
+margin:40px auto;
+padding:48px 40px;
+background:rgb(22,22,23);
+border-radius:12px;
+font-size:15px;
+line-height:1.5;
+box-sizing:border-box;
+}
+
+.dark-h2{
+font-size:28px;
+font-weight:600;
+color:#fff;
+margin-bottom:8px;
+}
+
+.dark-h3{
+font-size:18px;
+font-weight:600;
+color:#f8f4f2;
+margin:22px 0 6px;
+}
+
+.dark-help{
+font-size:14px;
+color:#a0a0a0;
+margin-bottom:14px;
+}
+
+.dark-input,
+.dark-textarea,
+.dark-select{
+width:100%;
+height:46px;
+padding:0 14px;
+font-size:15px;
+background:#171717;
+color:#f0f0f0;
+border:1px solid #333;
+border-radius:8px;
+box-sizing:border-box;
+margin-bottom:16px;
+}
+
+.dark-textarea{
+min-height:110px;
+padding:12px 14px;
+resize:vertical;
+}
+
+.dark-input:focus,
+.dark-textarea:focus,
+.dark-select:focus{
+border-color:#60a5fa;
+outline:none;
+}
+
+.dark-button-wrapper{
+margin-top:26px;
+display:flex;
+}
+
+.dark-button{
+height:48px;
+padding:0 26px;
+background:#f8f4f2;
+color:#232529;
+font-size:16px;
+font-weight:600;
+border:1px solid #d9d5d3;
+border-radius:8px;
+cursor:pointer;
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+.dark-button svg{
+width:20px;
+height:20px;
+stroke:#232529;
+stroke-width:2.2;
+}
+
+[data-straddle-dark-overlay]::-webkit-scrollbar{
+display:none;
+}
+
+[data-straddle-dark-overlay]{
+-ms-overflow-style:none;
+scrollbar-width:none;
+}
+
+</style>
+
+<div class="dark-root">
+
+<h2 class="dark-h2">Tell us about your business</h2>
+
+<div class="dark-help">
+This information is collected to better serve your business and comply with regulators and financial partners
+</div>
+
+<h3 class="dark-h3">Legal business name</h3>
+<input class="dark-input" id="legal_name" placeholder="Company"/>
+
+<h3 class="dark-h3">Employer Identification Number (EIN)</h3>
+<input class="dark-input" id="ein" maxlength="9" placeholder="Tax ID"/>
+
+<h3 class="dark-h3">Business name</h3>
+<input class="dark-input" id="business_name" placeholder="Doing business as"/>
+
+<h3 class="dark-h3">Business address</h3>
+<input class="dark-input" id="street" placeholder="Street address"/>
+<input class="dark-input" id="suite" placeholder="Unit or suite"/>
+<input class="dark-input" id="city" placeholder="City"/>
+
+<select class="dark-select" id="state_select">
+<option>State</option>
+<option value="AL">AL</option>
+<option value="NY">NY</option>
+</select>
+
+<input class="dark-input" id="zip" maxlength="5" placeholder="Zip code"/>
+
+<h3 class="dark-h3">Business phone number</h3>
+<input class="dark-input" id="phone" placeholder="Primary phone"/>
+
+<h3 class="dark-h3">Industry</h3>
+
+<select class="dark-select" id="industry">
+<option>Choose category</option>
+<option value="Digital Goods and Software">Digital Goods and Software</option>
+</select>
+
+<h3 class="dark-h3">Business website</h3>
+<input class="dark-input" id="website" placeholder="www.example.com"/>
+
+<h3 class="dark-h3">Product description</h3>
+<textarea class="dark-textarea" id="description"></textarea>
+
+<div class="dark-button-wrapper">
+
+<button class="dark-button" id="next_btn">
+Next
+<svg viewBox="0 0 24 24" fill="none">
+<path d="M5 12h14M12 5l7 7-7 7"/>
+</svg>
+</button>
+
+</div>
+
+</div>
+`;
+
+container.appendChild(overlay);
+
+function updateOverlaySize(){
+
+const rect = container.getBoundingClientRect();
+
+const width = rect.width;
+
+const height = Math.max(
+document.body.scrollHeight,
+container.scrollHeight,
+targetIframe?.scrollHeight || 0
+);
+
+overlay.style.width = width + "px";
+overlay.style.height = height  + "px";
+
+}
+
+setTimeout(updateOverlaySize,100);
+setTimeout(updateOverlaySize,500);
+setTimeout(updateOverlaySize,1500);
+
+window.addEventListener("resize",updateOverlaySize);
+
+console.log("[Straddle Overlay] Injected successfully");
+
+})();

@@ -5,17 +5,21 @@ import { Component, AfterViewInit, OnDestroy } from '@angular/core';
   template: `<div id="agenq-root"></div>`,
 })
 export class AgenqWidgetComponent implements AfterViewInit, OnDestroy {
-  // private agentId = '893f73d0-528e-4775-ad53-048e3aea6522';
-  // private projectId = 'c46de725-ef4d-4605-9bbe-c8af36f2badb';
-  // private customerCode = 'AGENQ-INDIA';
+  private agentId = "4c29ccf9-03af-4231-8d46-3989bd489783";
+  private projectId = "db70ffb4-365f-4ae0-9525-39a71ab40dbb";
+  private customerCode = "GROUP-BENEFITS";
 
-  private agentId = '10a6b680-96d2-465b-84bb-5e3dea6aa997';
-  private projectId = '96f356d5-cdce-4de8-bd47-a2d0111ab164';
-  private customerCode = 'GROUP-BENEFITS';
+    
+             
+             
+  // private agentId = 'ff492dd4-226b-4aac-a03f-46acf2cf93f6';
+  // private projectId = '368ce476-f19f-47df-9f03-a5524dcc7293';
+  // private customerCode = 'HIMANSHU-TEST';
 
-  private sdkUrl =
-    'https://cdnstaticfiles.blob.core.windows.net/cdn/clientsdk/agenq-client-sdk--dev.js';
-  // '/agenq-client-cdn.js';
+  private sdkUrl = '/agenq-client-cdn.js';
+
+  // 'https://cdn.aws.agenq.com/agenq-client-sdk.js';
+  // 'https://cdnstaticfiles.blob.core.windows.net/cdn/clientsdk/agenq-client-sdk.js';
 
   private renderInterval?: number;
 
