@@ -1,5 +1,6 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="utf-8">
   <title>Logiflow</title>
@@ -7,7 +8,30 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
+
 <body>
   <app-root></app-root>
+  <!-- AgenQ Agent Integration -->
+  <div id="agenq-root"
+    style="position: fixed; bottom: 20px; right: 20px; z-index: 10000; width: 0; height: 0; overflow: visible;"></div>
+  <script src="https://cdn.aws.agenq.com/agenq-client-sdk.js"></script>
+  <script>
+    window.addEventListener('load', () => {
+      const interval = setInterval(() => {
+        if (window.AGENQ?.render) {
+          clearInterval(interval);
+          window.AGENQ.render({
+            // agentId: "10a6b680-96d2-465b-84bb-5e3dea6aa997",
+            // projectId: "96f356d5-cdce-4de8-bd47-a2d0111ab164",
+            // customerCode: "GROUP-BENEFITS",
+             agentId: "6a7325c1-5252-4e27-86a6-1ddb630cc6d9",
+             projectId: "a3cb4f68-e816-4839-afcf-bff840bc7979",
+             customerCode: "HIMANSHU-TEST",
+          });
+        }
+      }, 100);
+    });
+  </script>
 </body>
+
 </html>

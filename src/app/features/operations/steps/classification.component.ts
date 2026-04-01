@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { OperationsStateService } from '../../../core/services/operations-state.service';
@@ -96,6 +96,49 @@ import { OperationsStateService } from '../../../core/services/operations-state.
           </div>
         </div>
 
+        <!-- Multi-select Dropdown for Handling Requirements -->
+        <div class="relative dropdown-container">
+          <label class="block text-xs font-bold text-slate-700 mb-1.5">Required Certifications & Permits</label>
+          <div (click)="toggleDropdown()" 
+               class="w-full bg-white border border-slate-300 shadow-sm rounded-lg px-3 py-2 cursor-pointer flex items-center justify-between hover:border-blue-400 transition-all min-h-[40px]">
+            <div class="flex flex-wrap gap-1.5">
+              <span *ngIf="form.value.handlingRequirements.length === 0" class="text-slate-400 text-xs font-medium">Select documents...</span>
+              <div *ngFor="let req of form.value.handlingRequirements" 
+                   class="bg-blue-100 text-blue-700 text-[10px] font-bold px-1.5 py-0.5 rounded flex items-center gap-1 animate-in zoom-in-95 duration-200">
+                {{req}}
+                <svg (click)="removeRequirement(req); $event.stopPropagation()" xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="hover:text-blue-900"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+              </div>
+            </div>
+            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" 
+                 class="text-slate-400 transition-transform duration-200" [class.rotate-180]="isDropdownOpen"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+
+          <!-- Dropdown Menu -->
+          <div *ngIf="isDropdownOpen" 
+               class="absolute z-10 w-full mt-1 bg-white border border-slate-200 shadow-xl rounded-lg overflow-hidden animate-in fade-in slide-in-from-top-1 duration-200">
+            <!-- Search Input -->
+            <div class="p-1.5 border-b border-slate-100 bg-slate-50/50">
+              <input type="text" 
+                     (click)="$event.stopPropagation()"
+                     (input)="onSearch($event)" 
+                     class="w-full bg-white border border-slate-200 rounded px-2 py-1.5 text-xs focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 outline-none placeholder:text-slate-400"
+                     placeholder="Search...">
+            </div>
+            
+            <div class="max-h-40 overflow-y-auto">
+              <div *ngFor="let option of filteredRequirements" 
+                   (click)="toggleRequirement(option); $event.stopPropagation()"
+                   class="px-3 py-2 hover:bg-slate-50 cursor-pointer flex items-center justify-between border-b border-slate-50 last:border-0">
+                <span class="text-xs font-medium" [class.text-blue-600]="isSelected(option)">{{option}}</span>
+                <svg *ngIf="isSelected(option)" xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="text-blue-600"><polyline points="20 6 9 17 4 12"/></svg>
+              </div>
+              <div *ngIf="filteredRequirements.length === 0" class="px-3 py-4 text-center text-slate-400 text-[10px]">
+                No results
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- Special Instructions -->
         <div>
           <label class="block text-sm font-bold text-slate-700 mb-2">Special Handling Instructions (Optional)</label>
@@ -115,8 +158,36 @@ import { OperationsStateService } from '../../../core/services/operations-state.
 })
 export class CargoClassificationComponent implements OnInit {
   form: FormGroup;
+  isDropdownOpen = false;
+  searchQuery = '';
+  availableRequirements = [
+    'MSDS (Material Safety Data Sheet)',
+    'DG Declaration',
+    'Phytosanitary Certificate',
+    'Customs Import Permit',
+    'Certificate of Origin',
+    'Insurance Cover Note',
+    'FDA Registry Confirmation'
+  ];
 
-  constructor(private fb: FormBuilder, private opsService: OperationsStateService) {
+  get filteredRequirements() {
+    return this.availableRequirements.filter(option =>
+      option.toLowerCase().includes(this.searchQuery.toLowerCase())
+    );
+  }
+
+  @HostListener('document:click', ['$event'])
+  onClickOutside(event: Event) {
+    if (!this.eRef.nativeElement.querySelector('.dropdown-container')?.contains(event.target)) {
+      this.isDropdownOpen = false;
+    }
+  }
+
+  constructor(
+    private fb: FormBuilder,
+    private opsService: OperationsStateService,
+    private eRef: ElementRef
+  ) {
     this.form = this.fb.group({
       hazardType: ['none', Validators.required],
       isFragile: [false],
@@ -131,6 +202,39 @@ export class CargoClassificationComponent implements OnInit {
         this.form.patchValue(state.classification);
       }
     });
+  }
+
+  toggleDropdown() {
+    this.isDropdownOpen = !this.isDropdownOpen;
+    if (this.isDropdownOpen) {
+      this.searchQuery = '';
+    }
+  }
+
+  onSearch(event: any) {
+    this.searchQuery = event.target.value;
+  }
+
+  toggleRequirement(req: string) {
+    const current = this.form.value.handlingRequirements as string[];
+    if (current.includes(req)) {
+      this.removeRequirement(req);
+    } else {
+      this.form.patchValue({
+        handlingRequirements: [...current, req]
+      });
+    }
+  }
+
+  removeRequirement(req: string) {
+    const current = this.form.value.handlingRequirements as string[];
+    this.form.patchValue({
+      handlingRequirements: current.filter(r => r !== req)
+    });
+  }
+
+  isSelected(req: string): boolean {
+    return this.form.value.handlingRequirements.includes(req);
   }
 
   onSubmit() {

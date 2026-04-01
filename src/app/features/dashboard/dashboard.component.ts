@@ -155,8 +155,8 @@ import { ExceptionResolutionComponent } from './exception-resolution.component';
                <text x="0" y="345" class="text-[11px] fill-slate-300">0</text>
                
                <!-- Smooth Curve Mock - Exact shape from image -->
-               <path d="M0,280 C100,260 200,270 300,220 C400,190 500,210 600,190 C700,160 800,140 V350 H0 Z" fill="url(#gradientBlue)" opacity="0.15" />
-               <path d="M0,280 C100,260 200,270 300,220 C400,190 500,210 600,190 C700,160 800,140" stroke="#3b82f6" fill="none" stroke-width="3" stroke-linecap="round" />
+               <path d="M0,280 C100,260 200,270 300,220 C400,190 500,210 600,190 L800,140 V350 H0 Z" fill="url(#gradientBlue)" opacity="0.15" />
+               <path d="M0,280 C100,260 200,270 300,220 C400,190 500,210 600,190 L800,140" stroke="#3b82f6" fill="none" stroke-width="3" stroke-linecap="round" />
                
                <defs>
                  <linearGradient id="gradientBlue" x1="0%" y1="0%" x2="0%" y2="100%">
