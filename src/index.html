@@ -14,19 +14,22 @@
   <!-- AgenQ Agent Integration -->
   <div id="agenq-root"
     style="position: fixed; bottom: 20px; right: 20px; z-index: 10000; width: 0; height: 0; overflow: visible;"></div>
-  <script src="https://cdn.aws.agenq.com/agenq-client-sdk.js"></script>
+  <script src="https://cdn.agenqglobal.com/agenq-client-sdk.js"></script>
+    <!-- <script src="https://cdn.agenqglobal.com/agenq-client-sdk--dev.js"></script> -->
+    
   <script>
     window.addEventListener('load', () => {
       const interval = setInterval(() => {
         if (window.AGENQ?.render) {
           clearInterval(interval);
           window.AGENQ.render({
-            // agentId: "10a6b680-96d2-465b-84bb-5e3dea6aa997",
-            // projectId: "96f356d5-cdce-4de8-bd47-a2d0111ab164",
-            // customerCode: "GROUP-BENEFITS",
-             agentId: "6a7325c1-5252-4e27-86a6-1ddb630cc6d9",
-             projectId: "a3cb4f68-e816-4839-afcf-bff840bc7979",
-             customerCode: "HIMANSHU-TEST",
+            //        agentId: "e6702944-c432-4a9d-a4cb-ff7916c145a6",
+            // projectId: "d2a051d0-192f-4173-a198-3f283fd1d22e",
+            // customerCode: "AWS",
+             agentId: "0d7075aa-721d-4f4a-a954-98f6a9420281",
+             projectId: "1940f74c-cac4-4e12-ba88-40b758426004",
+             customerCode: "DEMO-2",
+           
           });
         }
       }, 100);
